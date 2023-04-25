@@ -43,7 +43,7 @@ int access_cache(int set_index, int tag, int associativity, int replacement_poli
 {
     int start_index = set_index * associativity;
     int end_index = start_index + associativity - 1;
-    int hit_index = -1;
+    int hit_count = 0;
     int lru_index = start_index;
     int i;
 
@@ -54,8 +54,7 @@ int access_cache(int set_index, int tag, int associativity, int replacement_poli
         {
             if (cache[i].tag == tag)
             {
-                hit_index = i;
-                break;
+                hit_count++;
             }
             // Update LRU index
             if (cache[i].lru > cache[lru_index].lru)
@@ -66,36 +65,42 @@ int access_cache(int set_index, int tag, int associativity, int replacement_poli
         else
         {
             // Found an empty block
-            hit_index = i;
+            hit_count++;
             break;
         }
     }
 
     // Perform replacement if cache miss
-    if (hit_index == -1)
+    if (hit_count == 0)
     {
         miss_count++;
         if (replacement_policy == LRU)
         {
-            hit_index = lru_index;
+            // Replace the cache block with the LRU index
+            hit_count++;
+            cache[lru_index].tag = tag;
+            cache[lru_index].valid = 1;
         }
         else
         {
-            hit_index = start_index + (rand() % associativity);
+            // Replace a random cache block
+            hit_count++;
+            int random_index = start_index + (rand() % associativity);
+            cache[random_index].tag = tag;
+            cache[random_index].valid = 1;
         }
-        cache[hit_index].tag = tag;
-        cache[hit_index].valid = 1;
     }
     else
     {
-        hit_count++;
+        hit_count--;
+        hit_count += associativity;  // Full hit count for fully associative cache
         if (replacement_policy == LRU)
         {
-            cache[hit_index].lru = hit_count;
+            cache[lru_index].lru = hit_count;
         }
     }
 
-    return hit_index;
+    return hit_count;
 }
 
 // Function to read memory address from file and access the cache
@@ -104,7 +109,7 @@ void read_file_and_access_cache(const char* filename, int cache_type, int replac
     int address;
     int set_index;
     int tag;
-    int hit_index;
+    
     std::ifstream input_file(filename);
 
     if (!input_file.is_open()) {
@@ -117,12 +122,13 @@ void read_file_and_access_cache(const char* filename, int cache_type, int replac
         calculate_set_index_and_tag(address, &set_index, &tag);
         if (cache_type == DIRECT_MAPPED)
         {
-            hit_index = set_index;
+            hit_count = set_index;
         }
         else
         {
-            hit_index = access_cache(set_index, tag, cache_type, replacement_policy);
+            hit_count = access_cache(set_index, tag, cache_type, replacement_policy);
         }
+        cache[hit_count].data[address % BLOCK_SIZE] = address;
     }
     input_file.close();
 }
