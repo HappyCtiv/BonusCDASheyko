@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 // Define constants
 #define CACHE_SIZE 32
@@ -95,7 +98,7 @@ int access_cache(int set_index, int tag, int associativity, int replacement_poli
 }
 
 // Function to read memory address from file and access the cache
-void read_file_and_access_cache(char* filename, int cache_type, int replacement_policy)
+void read_file_and_access_cache(const char* filename, int cache_type, int replacement_policy)
 {
     int address;
     int set_index;
@@ -104,7 +107,7 @@ void read_file_and_access_cache(char* filename, int cache_type, int replacement_
     FILE* fp;
 
     // Open file
-    fp = fopen(filename, "r");
+    errno_t err = fopen_s(&fp, filename, "r");
     if (fp == NULL)
     {
         printf("Error: could not open file.\n");
@@ -112,7 +115,7 @@ void read_file_and_access_cache(char* filename, int cache_type, int replacement_
     }
 
     // Read memory addresses from file and access the cache
-    while (fscanf(fp, "%d", &address) != EOF)
+    while (fscanf_s(fp, "%d", &address) != EOF)
     {
         calculate_set_index_and_tag(address, &set_index, &tag);
         if (cache_type == DIRECT_MAPPED)
@@ -141,6 +144,8 @@ int main()
             cache[i].data[j] = 0;
         }
     }
+
+    std::ifstream myfile; myfile.open("traces.txt");
     // Read memory addresses from file and access cache for different cache types and replacement policies
     read_file_and_access_cache("traces.txt", DIRECT_MAPPED, RANDOM);
     printf("Direct-mapped, Random replacement:\n");
