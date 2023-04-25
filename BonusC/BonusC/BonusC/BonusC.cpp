@@ -142,9 +142,9 @@ int main()
         }
     }
 
-    std::ifstream input_file("traces.txt");
+    std::ifstream input_file("../traces.txt");
     // Read memory addresses from file and access cache for different cache types and replacement policies
-    read_file_and_access_cache("traces.txt", DIRECT_MAPPED, RANDOM);
+    read_file_and_access_cache("../traces.txt", DIRECT_MAPPED, RANDOM);
     printf("Direct-mapped, Random replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
@@ -152,7 +152,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", DIRECT_MAPPED, LRU);
+    read_file_and_access_cache("../traces.txt", DIRECT_MAPPED, LRU);
     printf("Direct-mapped, LRU replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
@@ -160,7 +160,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", TWO_WAY_SET_ASSOCIATIVE, RANDOM);
+    read_file_and_access_cache("../traces.txt", TWO_WAY_SET_ASSOCIATIVE, RANDOM);
     printf("2-way set associative, Random replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
@@ -168,7 +168,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", TWO_WAY_SET_ASSOCIATIVE, LRU);
+    read_file_and_access_cache("../traces.txt", TWO_WAY_SET_ASSOCIATIVE, LRU);
     printf("2-way set associative, LRU replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
@@ -176,7 +176,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", FOUR_WAY_SET_ASSOCIATIVE, RANDOM);
+    read_file_and_access_cache("../traces.txt", FOUR_WAY_SET_ASSOCIATIVE, RANDOM);
     printf("4-way set associative, Random replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
@@ -184,7 +184,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", FOUR_WAY_SET_ASSOCIATIVE, LRU);
+    read_file_and_access_cache("../traces.txt", FOUR_WAY_SET_ASSOCIATIVE, LRU);
     printf("4-way set associative, LRU replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
@@ -192,7 +192,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", FULLY_ASSOCIATIVE, RANDOM);
+    read_file_and_access_cache("../traces.txt", FULLY_ASSOCIATIVE, RANDOM);
 
     printf("Fully associative, Random replacement:\n");
     printf("Hits: %d\n", hit_count);
@@ -201,7 +201,7 @@ int main()
 
     hit_count = 0;
     miss_count = 0;
-    read_file_and_access_cache("traces.txt", FULLY_ASSOCIATIVE, LRU);
+    read_file_and_access_cache("../traces.txt", FULLY_ASSOCIATIVE, LRU);
     printf("Fully associative, LRU replacement:\n");
     printf("Hits: %d\n", hit_count);
     printf("Misses: %d\n", miss_count);
